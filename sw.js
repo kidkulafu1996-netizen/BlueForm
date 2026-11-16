@@ -1,6 +1,6 @@
 // BlueForm service worker: keeps the app working offline.
 // Bump VERSION whenever index.html changes so phones pick up the update.
-const VERSION = 'blueform-v1';
+const VERSION = 'blueform-v2';
 const SHELL = [
   './',
   './index.html',
@@ -14,7 +14,10 @@ const SHELL = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  // Cache each file on its own so one missing file can't block the install.
+  e.waitUntil(caches.open(VERSION)
+    .then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => null))))
+    .then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
