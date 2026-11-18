@@ -1,6 +1,6 @@
 // BlueForm service worker: keeps the app working offline.
 // Bump VERSION whenever index.html changes so phones pick up the update.
-const VERSION = 'blueform-v2';
+const VERSION = 'blueform-v3';
 const SHELL = [
   './',
   './index.html',
